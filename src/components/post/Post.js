@@ -7,7 +7,7 @@ import Image from './Image';
 import Link from './Link';
 import PostActionSection from './PostActionSection';
 import Comments from '../comment/Comments';
-import DisplayMap from '../map/DisplayMap';
+//import DisplayMap from '../map/DisplayMap';
 import UserHeader from '../post/UserHeader';
 import Loader from '../Loader';
 
