@@ -1,5 +1,7 @@
-{
-    "ENDPOINT": "http://localhost:3500",
+const ip = require('ip');
+
+module.exports = {
+    "ENDPOINT": "http://" + ip.address() + ":3500",
     "ORIGINS": ["http://*:3000", "http://*:3100"],
     "CLIENT": ":3000",
     "NODE_ENV": "development",
