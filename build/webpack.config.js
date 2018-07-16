@@ -3,10 +3,12 @@ const webpack = require('webpack');
 const config = require('config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const ip = require('ip');
+
 const GLOBALS = {
     'process.env': {
         NODE_ENV: JSON.stringify(config.get('NODE_ENV')),
-        ENDPOINT: JSON.stringify(config.get('ENDPOINT')),
+        ENDPOINT: JSON.stringify("http://" + ip.address() + config.get('ENDPOINT')),
         RIA_SENTRY_APP: JSON.stringify(config.get('RIA_SENTRY_APP')),
         GOOGLE_API_KEY: JSON.stringify(config.get('GOOGLE_API_KEY')),
         FIREBASE_AUTH_DOMAIN: JSON.stringify(config.get('FIREBASE_AUTH_DOMAIN')),
@@ -21,6 +23,7 @@ module.exports = {
         historyApiFallback: true,
         compress: true,
         port: 3000,
+        host: '0.0.0.0',
         overlay: true
     },
     devtool: 'source-map',
@@ -29,7 +32,7 @@ module.exports = {
     target: 'web',
     output: {
         path: `${__dirname}/lib`,
-        publicPath: 'http://localhost:3000/',
+        publicPath: '/',
         filename: 'bundle.js'
     },
     plugins: [
