@@ -6,6 +6,10 @@ import classnames from 'classnames';
 import DisplayMap from '../map/DisplayMap';
 import LocationTypeAhead from '../map/LocationTypeAhead';
 
+/**
+ * Component that allows users to create posts
+ * @type {Object}
+ */
 class CreatePost extends React.Component {
     static propTypes = {
         onSubmit: PropTypes.func.isRequired
@@ -33,12 +37,12 @@ class CreatePost extends React.Component {
         this.onLocationUpdate = this.onLocationUpdate.bind(this);
         this.renderLocationControls = this.renderLocationControls.bind(this);
     }
-    handlePostChange(e) {
-        const content = this.filter.clean(e.target.value);
+    handlePostChange(event) {
+        const content = this.filter.clean(event.target.value);
         this.setState(() => {
             return {
                 content,
-                valid: content.length <= 280
+                valid: content.length <= 300
             };
         });
     }
@@ -48,7 +52,8 @@ class CreatePost extends React.Component {
             location: this.initialState.location
         }));
     }
-    handleSubmit() {
+    handleSubmit(event) {
+        event.preventDefault();
         if (!this.state.valid) {
             return;
         }
@@ -77,8 +82,8 @@ class CreatePost extends React.Component {
             locationSelected: true
         }));
     }
-    handleToggleLocation(e) {
-        e.preventDefault();
+    handleToggleLocation(event) {
+        event.preventDefault();
         this.setState(state => ({ showLocationPicker: !state.showLocationPicker }));
     }
     // We can implement a "subrender" method here and not clutter the main render method with tons
@@ -120,20 +125,18 @@ class CreatePost extends React.Component {
                     className="location-picker"
                     style={{ display: this.state.showLocationPicker ? 'block' : 'none' }}
                 >
-                    {!this.state.locationSelected && [
+                    {!this.state.locationSelected && (
                         <LocationTypeAhead
-                            key="LocationTypeAhead"
-                            onLocationSelect={this.onLocationSelect}
-                            onLocationUpdate={this.onLocationUpdate}
-                        />,
-                        <DisplayMap
-                            key="DisplayMap"
-                            displayOnly={false}
-                            location={this.state.location}
                             onLocationSelect={this.onLocationSelect}
                             onLocationUpdate={this.onLocationUpdate}
                         />
-                    ]}
+                    )}
+                    <DisplayMap
+                        displayOnly={false}
+                        location={this.state.location}
+                        onLocationSelect={this.onLocationSelect}
+                        onLocationUpdate={this.onLocationUpdate}
+                    />
                 </div>
             </div>
         );
