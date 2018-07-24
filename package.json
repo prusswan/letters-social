@@ -26,6 +26,8 @@
         "start": "NODE_ENV=production pm2 start ./index.js --no-daemon",
         "styles:w": "npm run styles && node-sass src/styles/styles.scss -o static/ -w src/styles --watch --recursive",
         "styles": "node-sass -q src/styles/styles.scss -o static/",
+        "test:w": "jest --watch --coverage",
+        "test": "jest --coverage",
         "r-start": "PORT=3001 BROWSER=none react-scripts start",
         "r-build": "react-scripts build",
         "r-test": "react-scripts test --env=jsdom",
@@ -43,6 +45,10 @@
     "engines": {
         "node": "8.5.0",
         "npm": "5.4.0"
+    },
+    "jest": {
+        "testEnvironment": "jsdom",
+        "setupFiles": ["raf/polyfill", "./test/setup.js"]
     },
     "homepage": "https://github.com/react-in-action/letters-social#readme",
     "dependencies": {
