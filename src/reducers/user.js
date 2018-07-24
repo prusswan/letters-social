@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 
 import initialState from '../constants/initialState';
 import * as types from '../constants/types';
+import { isServer } from '../utils/environment';
 
 /**
  * The user reducer is responsible
@@ -15,7 +16,9 @@ export function user(state = initialState.user, action) {
     switch (action.type) {
         case types.auth.LOGIN_SUCCESS:
             const { user, token } = action;
-            Cookies.set('letters-token', token);
+            if (!isServer()) {
+                Cookies.set('letters-token', token);
+            }
             return Object.assign({}, state.user, {
                 authenticated: true,
                 name: user.name,

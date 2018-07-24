@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { logUserOut } from './backend/auth';
 import ErrorMessage from './components/error/Error';
 import Nav from './components/nav/navbar';
 import Loader from './components/Loader';
@@ -13,35 +13,25 @@ import Loader from './components/Loader';
  * @module letters/components
  */
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: null,
-            loading: false
-        };
-    }
-    static propTypes = {
-        children: PropTypes.node
-    };
-    componentDidCatch(err, info) {
-        console.error(err);
-        console.error(info);
-        this.setState(() => ({
-            error: err
-        }));
+    componentDidMount() {
+        // Remove the initial state that was embedded with the intial HTML sent by the server
+        const embeddedState = document.getElementById('initialState');
+        if (embeddedState) {
+            embeddedState.remove();
+        }
     }
     render() {
-        if (this.state.error) {
+        if (this.props.error) {
             return (
                 <div className="app">
-                    <ErrorMessage error={this.state.error} />
+                    <ErrorMessage error={this.props.error} />
                 </div>
             );
         }
         return (
             <div className="app">
-                <Nav handleLogout={() => logUserOut()} user={this.props.user} />
-                {this.state.loading ? (
+                <Nav />
+                {this.props.loading ? (
                     <div className="loading">
                         <Loader />
                     </div>
@@ -53,4 +43,14 @@ class App extends Component {
     }
 }
 
-export default App;
+App.propTypes = {
+    children: PropTypes.node
+};
+
+export const mapStateToProps = state => {
+    return {
+        error: state.error,
+        loading: state.loading
+    };
+};
+export default connect(mapStateToProps)(App);

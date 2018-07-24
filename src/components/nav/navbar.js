@@ -1,5 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { logout } from '../../actions/auth';
 import Link from '../router/Link';
 import Logo from './logo';
 
@@ -28,14 +30,10 @@ export const Navigation = ({ user, handleLogout }) => (
         )}
     </nav>
 );
-
-Navigation.propTypes = {
-    handleLogout: PropTypes.func.isRequired,
-    user: PropTypes.shape({
-        name: PropTypes.string,
-        authenticated: PropTypes.bool,
-        profilePicture: PropTypes.string
-    })
-};
-
-export default Navigation;
+export const mapStateToProps = state => ({ user: state.user });
+export const mapDispatchToProps = dispatch => ({
+    handleLogout() {
+        dispatch(logout());
+    }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

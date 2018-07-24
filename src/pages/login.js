@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
-
-import { history } from '../history';
-import { loginWithGithub } from '../backend/auth';
+import { connect } from 'react-redux';
+import { login } from '../actions/auth';
 import { providers } from '../constants/types';
 import Welcome from '../components/welcome/Welcome';
 
 export class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.login = this.login.bind(this);
-    }
-    login() {
-        loginWithGithub().then(() => {
-            history.push('/');
-        });
-    }
     render() {
+        const { handleLogin } = this.props;
         return (
             <div className="login">
                 <div className="welcome-container">
@@ -23,7 +14,10 @@ export class Login extends Component {
                 </div>
                 <div className="providers">
                     {providers.map(provider => (
-                        <button key={provider} onClick={this.login}>
+                        <button
+                            key={provider}
+                            onClick={this.props.handleLogin.bind(this, provider)}
+                        >
                             <i className={`fa fa-${provider.toLowerCase()}`} /> log in with{' '}
                             {provider}
                         </button>
@@ -34,4 +28,10 @@ export class Login extends Component {
     }
 }
 
-export default Login;
+export const mapStateToProps = state => state;
+export const mapDispatchToProps = dispatch => ({
+    handleLogin(provider) {
+        dispatch(login(provider));
+    }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -7,13 +7,15 @@ import invariant from 'invariant';
  * @type {Object}
  */
 class Route extends Component {
-    static propTypes = {
-        path: PropTypes.string,
-        component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
-    };
     render() {
         return invariant(false, "<Route> elements are for config only and shouldn't be rendered");
     }
 }
+
+Route.propTypes = {
+    path: PropTypes.string,
+    component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+    index: PropTypes.oneOfType([PropTypes.element, PropTypes.bool])
+};
 
 export default Route;

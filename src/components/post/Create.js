@@ -68,7 +68,7 @@ class CreatePost extends React.Component {
             content: '',
             valid: false,
             showLocationPicker: false,
-            location: this.initialState.location,
+            location: this.defaultLocation,
             locationSelected: false
         }));
     }
@@ -119,6 +119,7 @@ class CreatePost extends React.Component {
                     value={this.state.content}
                     onChange={this.handlePostChange}
                     placeholder="What's on your mind?"
+                    maxlength="280"
                 />
                 {this.renderLocationControls()}
                 <div

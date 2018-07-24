@@ -34,8 +34,8 @@ export default class Router extends Component {
     }
 
     addRoute(element, parent) {
-        // Get the component, path, and children props from a given child
-        const { component, path, children } = element.props;
+        // Get the component, path, index, and children props from a given child
+        const { component, path, children, index } = element.props;
 
         // Ensure that it has the right input, since PropTypes can't really help here
         invariant(component, `Route ${path} is missing the "path" property`);
@@ -43,7 +43,7 @@ export default class Router extends Component {
 
         // Set up Ccmponent to be rendered
         const render = (params, renderProps) => {
-            const finalProps = Object.assign({ params }, this.props, renderProps);
+            const finalProps = Object.assign({ router: { params } }, this.props, renderProps);
 
             // Or, using the object spread operator (currently a candidate proposal for future versions of JavaScript)
             // const finalProps = {
@@ -52,7 +52,11 @@ export default class Router extends Component {
             //   params,
             // };
 
-            const children = React.createElement(component, finalProps);
+            const hasIndexRoute = index && path === finalProps.location;
+
+            const children = hasIndexRoute
+                ? React.createElement(component, finalProps, React.createElement(index, finalProps))
+                : React.createElement(component, finalProps);
 
             return parent ? parent.render(params, { children }) : children;
         };
