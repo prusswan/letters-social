@@ -70,7 +70,7 @@ function generatePost(userId) {
     config.location =
         random.boolean() && !config.link && !config.image
             ? {
-                  lat: Number.parseFloat(address.latitude(), 10),
+                  lat: Number.parseFloat(address.latitude(-85.0511,85.0511), 10),
                   lng: Number.parseFloat(address.longitude(), 10),
                   name: generateFakeContent('planets', 1)[0]
               }
